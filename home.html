@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tool Versions</title>
+</head>
+<body>
+<h1>Tool Versions</h1>
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Latest Version</th>
+        <th>Remote Version</th>
+        <th>Up to Date</th>
+    </tr>
+    {{range .Tools}}
+    <tr>
+        <td>{{.Name}}</td>
+        <td>{{.LatestVersion}}</td>
+        <td>{{.RemoteVersion}}</td>
+        <td style="color: {{if .UpToDate}}green{{else}}red{{end}};">{{.UpToDate}}</td>
+    </tr>
+    {{end}}
+</table>
+</body>
+</html>
