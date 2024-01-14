@@ -35,7 +35,7 @@ func fetchToolData(config Config) []ToolData {
 	var mu sync.Mutex // Mutex to protect toolData slice
 
 	for _, tool := range config.Tools {
-		wg.Add(1)
+		wg.Add(2)
 		go func(t Tool) {
 			defer wg.Done()
 			latestVersion, err := fetchVersion(t.LatestVersionEndpoint, t.JSONVersionKey)
@@ -72,7 +72,7 @@ func fetchToolData(config Config) []ToolData {
 // Periodically refresh the data to check if versions have changes
 func fetchToolDataPeriodically(config Config) {
 	log.Info("Starting periodic data fetch...")
-	ticker := time.NewTicker(10 * time.Minute)
+	ticker := time.NewTicker(11 * time.Minute)
 	defer ticker.Stop()
 
 	// Initial fetch
