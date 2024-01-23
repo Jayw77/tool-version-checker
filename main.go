@@ -1,9 +1,10 @@
 package main
 
 import (
+	"os"
+
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"
-	"io/ioutil"
 )
 
 var log = logrus.New()
@@ -12,7 +13,7 @@ var currentToolData []ToolData // Global variable to store the latest data
 func main() {
 	log.SetFormatter(&logrus.JSONFormatter{})
 
-	yamlFile, err := ioutil.ReadFile("config.yaml")
+	yamlFile, err := os.ReadFile("config.yaml")
 	if err != nil {
 		log.WithField("error", err).Error("Error reading YAML file")
 		return
