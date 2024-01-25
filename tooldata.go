@@ -1,9 +1,10 @@
 package main
 
 import (
-	"github.com/sirupsen/logrus"
 	"sync"
 	"time"
+
+	"github.com/sirupsen/logrus"
 )
 
 // Tool represents a tool to check versions for
@@ -11,7 +12,8 @@ type Tool struct {
 	Name                  string `yaml:"name"`
 	LatestVersionEndpoint string `yaml:"latestVersionEndpoint"`
 	RemoteVersionEndpoint string `yaml:"remoteVersionEndpoint"`
-	JSONVersionKey        string `yaml:"jsonVersionKey"`
+	LatestJSONVersionKey  string `yaml:"latestJsonVersionKey"`
+	RemoteJSONVersionKey  string `yaml:"remoteJsonVersionKey"`
 }
 
 // Config represents the YAML configuration format
@@ -38,13 +40,13 @@ func fetchToolData(config Config) []ToolData {
 		wg.Add(2)
 		go func(t Tool) {
 			defer wg.Done()
-			latestVersion, err := fetchVersion(t.LatestVersionEndpoint, t.JSONVersionKey)
+			latestVersion, err := fetchVersion(t.LatestVersionEndpoint, t.LatestJSONVersionKey)
 			if err != nil {
 				log.WithFields(logrus.Fields{"tool": t.Name, "error": err}).Error("Error fetching latest version")
 				latestVersion = "Error fetching version"
 			}
 
-			remoteVersion, err := fetchVersion(t.RemoteVersionEndpoint, t.JSONVersionKey)
+			remoteVersion, err := fetchVersion(t.RemoteVersionEndpoint, t.RemoteJSONVersionKey)
 			if err != nil {
 				log.WithFields(logrus.Fields{"tool": t.Name, "error": err}).Error("Error fetching remote version")
 				remoteVersion = "Error fetching version"

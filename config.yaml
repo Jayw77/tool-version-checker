@@ -1,9 +1,11 @@
 tools:
-  - name: "Prometheus"
-    latestVersionEndpoint: "https://api.github.com/repos/prometheus/prometheus/releases/latest"
-    remoteVersionEndpoint: "https://api.github.com/repos/prometheus/prometheus/releases/latest"
-    jsonVersionKey: "tag_name"
-  - name: "Grafana"
-    latestVersionEndpoint: "https://api.github.com/repos/grafana/grafana/releases/latest"
-    remoteVersionEndpoint: "https://api.github.com/repos/grafana/grafana/releases/latest"
-    jsonVersionKey: "tag_name"
+  - name: 'Prometheus'
+    latestVersionEndpoint: 'https://api.github.com/repos/prometheus/prometheus/releases/latest'
+    latestJsonVersionKey: 'tag_name'
+    remoteVersionEndpoint: 'https://api.github.com/repos/prometheus/prometheus/releases/latest'
+    remoteJsonVersionKey: 'tag_name'
+  - name: 'Grafana'
+    latestVersionEndpoint: 'https://api.github.com/repos/grafana/grafana/releases/latest'
+    latestJsonVersionKey: 'tag_name'
+    remoteVersionEndpoint: 'https://api.github.com/repos/grafana/grafana/releases/latest'
+    remoteJsonVersionKey: 'tag_name'
