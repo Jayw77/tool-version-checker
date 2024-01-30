@@ -14,7 +14,7 @@ var log = logrus.New()
 func main() {
 	log.SetFormatter(&logrus.JSONFormatter{})
 
-	yamlFile, err := ioutil.ReadFile("config.yaml")
+	yamlFile, err := os.ReadFile("config.yaml")
 	if err != nil {
 		log.WithField("error", err).Error("Error reading YAML file")
 		return
