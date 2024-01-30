@@ -2,8 +2,8 @@ package main
 
 import (
 	"html/template"
-	"io/ioutil"
 	"net/http"
+	"os"
 
 	"github.com/sirupsen/logrus"
 	"gopkg.in/yaml.v2"

@@ -30,6 +30,12 @@ func fetchVersion(endpoint string, jsonKey string) (string, error) {
 		return "", err
 	}
 
+	// Check if the status code is http.StatusBadRequest
+	if resp.StatusCode == http.StatusBadRequest {
+		log.WithFields(logrus.Fields{"endpoint": endpoint, "statusCode": resp.StatusCode}).Error("Bad request")
+		return "", fmt.Errorf("bad request: %v", resp.Status)
+	}
+
 	if val, ok := jsonData[jsonKey]; ok {
 		version, ok := val.(string)
 		if !ok {
