@@ -24,7 +24,8 @@ var currentToolData []ToolData // Global variable to store the latest data
 
 func fetchToolDataPeriodically(config Config) {
 	log.Info("Starting periodic data fetch...")
-	ticker := time.NewTicker(10 * time.Minute)
+	fetchInterval := 10 * time.Minute
+	ticker := time.NewTicker(fetchInterval)
 	defer ticker.Stop()
 
 	// Initial fetch
@@ -36,6 +37,7 @@ func fetchToolDataPeriodically(config Config) {
 			log.Info("Fetching tool data...")
 			currentToolData = fetchToolData(config)
 			log.Info("Tool data fetched successfully.")
+			log.Infof("Will check again in %v...", fetchInterval)
 		}
 	}
 }
