@@ -39,16 +39,16 @@ tools:
     myVersionJSONKey: "tag_name"
 ```
 
-| Field                   | Description                                                                                                                      |
-| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| `name`                  | Name of the tool.                                                                                                                |
-| `latestVersionEndpoint` | URL to fetch the latest version.                                                                                                 |
-| `latestVersionJSONKey`  | JSON field name that the tag exists in.                                                                                          |
-| `myVersionEndpoint`     | The endpoint you want to check against the latest version.                                                                       |
-| `myVersionJSONKey`      | JSON field name that the tag exists in.                                                                                          |
-| `currentVersion`        | Current version of the tool being run. This is useful if you can't get to the endpoint and want to manually override (optional). |
-| `fetchInterval`         | Interval to fetch the endpoints and refresh the frontend in minutes. Default is 10 minutes (optional).                           |
-| `comment`               | A comment about the tool (optional).                                                                                             |
+| Field                   | Required/Optional                        | Description                                                                                                           |
+| ----------------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| `name`                  | Required                                 | Name of the tool.                                                                                                     |
+| `latestVersionEndpoint` | Required                                 | URL to fetch the latest version.                                                                                      |
+| `latestVersionJSONKey`  | Required                                 | JSON field name that the tag exists in.                                                                               |
+| `myVersionEndpoint`     | Required (unless currentVersion is used) | The endpoint you want to check against the latest version.                                                            |
+| `myVersionJSONKey`      | Required (unless currentVersion is used) | JSON field name that the tag exists in.                                                                               |
+| `currentVersion`        | Optional                                 | Current version of the tool being run. This is useful if you can't get to the endpoint and want to manually override. |
+| `fetchInterval`         | Optional                                 | Interval to fetch the endpoints and refresh the frontend in minutes. Default is 10 minutes.                           |
+| `comment`               | Optional                                 | A comment about the tool.                                                                                             |
 
 ## Output / Frontend
 
