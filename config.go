@@ -1,15 +1,18 @@
 package main
 
-// Tool represents a tool to check versions for
+// Tool struct used inside the tools list for each tool
 type Tool struct {
-	Name                  string `yaml:"name"`
-	LatestVersionEndpoint string `yaml:"latestVersionEndpoint"`
-	RemoteVersionEndpoint string `yaml:"remoteVersionEndpoint"`
-	LatestVersionJSONKey  string `yaml:"latestVersionJSONKey"`
-	RemoteVersionJSONKey  string `yaml:"remoteVersionJSONKey"`
+	Name                  string  `yaml:"name"`
+	LatestVersionEndpoint string  `yaml:"latestVersionEndpoint"`
+	MyVersionEndpoint     string  `yaml:"myVersionEndpoint"`
+	LatestVersionJSONKey  string  `yaml:"latestVersionJSONKey"`
+	MyVersionJSONKey      string  `yaml:"myVersionJSONKey"`
+	CurrentVersion        *string `yaml:"currentVersion"` // using string pointer allows us to differentiate between null & ""
+	Comment               string  `yaml:"comment"`
 }
 
-// Config represents the YAML configuration format
+// Config struct for the top level yaml file
 type Config struct {
-	Tools []Tool `yaml:"tools"`
+	Tools         []Tool `yaml:"tools"`
+	FetchInterval int    `yaml:"fetchInterval"`
 }
