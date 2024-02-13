@@ -50,7 +50,7 @@ tools:
 
 ## Output / Frontend
 
-![frontend](./images/tool-version-checker.png)
+![frontend](./images/tool-versions.png)
 
 ## Running Locally
 
