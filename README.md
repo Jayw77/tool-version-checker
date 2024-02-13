@@ -83,3 +83,8 @@ docker run -d -p 8080:8080 -v $(pwd):/app jayw77/version-checker:latest
 ```
 
 Replace $(pwd) with the path to the directory containing your config.yaml file. The server will start on port 8080, and you can access the web interface as described above.
+
+## Dockerhub Releases
+
+A github workflow is setup to automatically release to docerhub on a successful run on main. It will update the latest tag and tag the SHA.
+In addition, when creating a release using semver, it will automatically create a tag to match the release.
