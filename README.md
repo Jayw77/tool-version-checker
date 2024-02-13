@@ -39,14 +39,16 @@ tools:
     myVersionJSONKey: "tag_name"
 ```
 
-**name**: Name of the tool.
-**latestVersionEndpoint**: URL to fetch the latest version.
-**latestVersionJSONKey**: JSON field name that the tag exists in.
-**myVersionEndpoint**: The endpoint you want to check against the latest version.
-**myVersionJSONKey**: JSON field name that the tag exists in.
-**currentVersion**: Current version of the tool being run. This is useful if you can't get get to the endpoint and want to manually override (optional).
-**fetchInterval**: Interval to fetch the endpoints and refresh the frontend in minutes. Default is 10 minutes (optional).
-**comment**: A comment about the tool (optional).
+| Field                   | Description                                                                                                                      |
+| ----------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `name`                  | Name of the tool.                                                                                                                |
+| `latestVersionEndpoint` | URL to fetch the latest version.                                                                                                 |
+| `latestVersionJSONKey`  | JSON field name that the tag exists in.                                                                                          |
+| `myVersionEndpoint`     | The endpoint you want to check against the latest version.                                                                       |
+| `myVersionJSONKey`      | JSON field name that the tag exists in.                                                                                          |
+| `currentVersion`        | Current version of the tool being run. This is useful if you can't get to the endpoint and want to manually override (optional). |
+| `fetchInterval`         | Interval to fetch the endpoints and refresh the frontend in minutes. Default is 10 minutes (optional).                           |
+| `comment`               | A comment about the tool (optional).                                                                                             |
 
 ## Output / Frontend
 
