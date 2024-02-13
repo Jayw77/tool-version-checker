@@ -72,8 +72,9 @@ The application is also available as a Docker image on DockerHub (jayw77/version
 
 ### Pull the Docker image:
 
-docker pull jayw77/version-checker:latest
-Run the Docker container, ensuring to mount the directory containing your config.yaml to the container:
+`docker pull jayw77/version-checker:latest`
+
+### Run the Docker container, ensuring to mount the directory containing your config.yaml to the container:
 
 ```bash
 docker run -d -p 8080:8080 -v $(pwd):/app jayw77/version-checker:latest
