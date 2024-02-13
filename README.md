@@ -76,10 +76,10 @@ The application is also available as a Docker image on DockerHub (jayw77/version
 
 `docker pull jayw77/version-checker:latest`
 
-### Run the Docker container, ensuring to mount the directory containing your config.yaml to the container:
+### Run the Docker container, ensuring to mount the config.yaml to the container:
 
 ```bash
-docker run -d -p 8080:8080 -v $(pwd):/app jayw77/version-checker:latest
+docker run -d -p 8080:8080 -v $(pwd)/config.yaml:/config.yaml jayw77/version-checker:latest
 ```
 
 Replace $(pwd) with the path to the directory containing your config.yaml file. The server will start on port 8080, and you can access the web interface as described above.
