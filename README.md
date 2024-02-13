@@ -50,7 +50,7 @@ tools:
 
 ## Output / Frontend
 
-    ![frontend](./images/tool-version-checker.png)
+![frontend](./images/tool-version-checker.png)
 
 ## Running Locally
 
@@ -76,7 +76,7 @@ docker pull jayw77/version-checker:latest
 Run the Docker container, ensuring to mount the directory containing your config.yaml to the container:
 
 ```bash
-docker run -p 8080:8080 -v $(pwd):/app jayw77/version-checker
+docker run -d -p 8080:8080 -v $(pwd):/app jayw77/version-checker:latest
 ```
 
 Replace $(pwd) with the path to the directory containing your config.yaml file. The server will start on port 8080, and you can access the web interface as described above.

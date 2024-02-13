@@ -21,7 +21,6 @@ FROM alpine:latest
 COPY --from=builder /app/version-checker .
 
 # Copy the relevant files from the builder stage
-COPY --from=builder /app/config.yaml .
 COPY --from=builder /app/home.html .
 
 # Install tail or any other utilities you might need
