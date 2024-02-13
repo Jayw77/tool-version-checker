@@ -20,7 +20,7 @@ Before running the application, ensure you have the following installed:
 - Go (if running locally)
 - Docker (if running via Docker)
 
-## Configuration
+## Configuration - config.yaml
 
 ```yaml
 fetchInterval: 10 # defined in minutes (Optional)
