@@ -1,5 +1,7 @@
 package main
 
+import "os"
+
 // Tool struct used inside the tools list for each tool
 type Tool struct {
 	Name                  string  `yaml:"name"`
@@ -15,4 +17,12 @@ type Tool struct {
 type Config struct {
 	Tools         []Tool `yaml:"tools"`
 	FetchInterval int    `yaml:"fetchInterval"`
+}
+
+func fileExists(filename string) bool {
+	info, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return false
+	}
+	return !info.IsDir()
 }

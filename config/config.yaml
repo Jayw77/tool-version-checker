@@ -1,0 +1,14 @@
+# fetchInterval: 10 # defined in minutes
+tools:
+  - name: 'Prometheus'
+    latestVersionEndpoint: 'https://api.github.com/repos/prometheus/prometheus/releases/latest'
+    latestVersionJSONKey: 'tag_name'
+    # myVersionEndpoint: 'https://api.github.com/repos/prometheus/prometheus/releases/latest'
+    # myVersionJSONKey: 'tag_name'
+    currentVersion: 'v2.48.1'
+    comment: 'Blocked by vulnerability in latest version.'
+  - name: 'Grafana'
+    latestVersionEndpoint: 'https://api.github.com/repos/grafana/grafana/releases/latest'
+    latestVersionJSONKey: 'tag_name'
+    myVersionEndpoint: 'https://api.github.com/repos/grafana/grafana/releases/latest'
+    myVersionJSONKey: 'tag_name'
