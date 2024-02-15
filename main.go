@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"html/template"
 	"net/http"
 	"os"
@@ -13,10 +14,25 @@ var log = logrus.New()
 
 func main() {
 	log.SetFormatter(&logrus.JSONFormatter{})
+	var yamlFile []byte
+	var err error
 
-	yamlFile, err := os.ReadFile("config.yaml")
-	if err != nil {
-		log.WithField("error", err).Error("Error reading YAML file")
+	if fileExists("config/config.yaml") {
+		yamlFile, err = os.ReadFile("config/config.yaml")
+		if err != nil {
+			log.WithField("error", err).Error("Error reading YAML file from config directory")
+			return
+		}
+		fmt.Println("Using config/config.yaml")
+	} else if fileExists("default_config.yaml") {
+		yamlFile, err = os.ReadFile("default_config.yaml")
+		if err != nil {
+			log.WithField("error", err).Error("Error reading YAML file from default config")
+			return
+		}
+		fmt.Println("Using default_config.yaml")
+	} else {
+		log.Error("No configuration file found")
 		return
 	}
 
