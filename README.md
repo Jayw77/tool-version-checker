@@ -3,7 +3,7 @@
 ## Overview
 
 The Version Checker is a Go application designed to monitor and compare the versions of various tools against their latest available versions.
-It utilizes a configuration file (`config.yaml`) to specify which tools to check, along with optional settings for fetch intervals, current versions,
+It utilizes a configuration file (`config/config.yaml`) to specify which tools to check, along with optional settings for fetch intervals, current versions,
 and comments for each tool. The application periodically fetches the latest version data for these tools and serves a webpage displaying this information,
 making it easy to see which tools are up to date and which need attention.
 
@@ -21,6 +21,8 @@ Before running the application, ensure you have the following installed:
 - Docker (if running via Docker)
 
 ## Configuration - config.yaml
+
+\*\*Note: if you don't pass a `config/config.yaml` then it will use the `default_config.yaml` which has test data only.\*\*
 
 ```yaml
 fetchInterval: 10 # defined in minutes (Optional)
