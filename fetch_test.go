@@ -50,6 +50,30 @@ func TestFetchVersion(t *testing.T) {
 			want:           "",
 			wantErr:        true,
 		},
+		{
+			name: "nested valid response",
+			mockResponse: map[string]interface{}{
+				"data": map[string]interface{}{
+					"version": "2.48.1",
+				},
+			},
+			mockStatusCode: http.StatusOK,
+			jsonKey:        "data.version",
+			want:           "2.48.1",
+			wantErr:        false,
+		},
+		{
+			name: "nested key not found",
+			mockResponse: map[string]interface{}{
+				"data": map[string]interface{}{
+					"invalidKey": "2.48.1",
+				},
+			},
+			mockStatusCode: http.StatusOK,
+			jsonKey:        "data.version",
+			want:           "",
+			wantErr:        true,
+		},
 	}
 
 	for _, tc := range tests {

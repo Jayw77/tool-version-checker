@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -30,21 +31,32 @@ func fetchVersion(endpoint string, jsonKey string) (string, error) {
 		return "", err
 	}
 
-	// Check if the status code is http.StatusBadRequest
 	if resp.StatusCode == http.StatusBadRequest {
 		log.WithFields(logrus.Fields{"endpoint": endpoint, "statusCode": resp.StatusCode}).Error("Bad request")
 		return "", fmt.Errorf("bad request: %v", resp.Status)
 	}
 
-	if val, ok := jsonData[jsonKey]; ok {
-		version, ok := val.(string)
-		if !ok {
-			log.WithFields(logrus.Fields{"endpoint": endpoint, "key": jsonKey}).Error("Unexpected type for key")
-			return "", fmt.Errorf("unexpected type for key %s", jsonKey)
+	// Split the jsonKey by "." to support nested keys
+	keys := strings.Split(jsonKey, ".")
+
+	var current interface{} = jsonData
+	for _, key := range keys {
+		if currMap, ok := current.(map[string]interface{}); ok {
+			current, ok = currMap[key]
+			if !ok {
+				log.WithFields(logrus.Fields{"endpoint": endpoint, "key": key}).Error("Key not found in JSON")
+				return "", fmt.Errorf("key %s not found in JSON", key)
+			}
+		} else {
+			log.WithFields(logrus.Fields{"endpoint": endpoint, "key": key}).Error("Unexpected JSON structure")
+			return "", fmt.Errorf("unexpected JSON structure for key %s", key)
 		}
-		return version, nil
-	} else {
-		log.WithFields(logrus.Fields{"endpoint": endpoint, "key": jsonKey}).Error("Key not found in JSON")
-		return "", fmt.Errorf("key %s not found", jsonKey)
 	}
+
+	version, ok := current.(string)
+	if !ok {
+		log.WithFields(logrus.Fields{"endpoint": endpoint, "key": jsonKey}).Error("Unexpected type for key")
+		return "", fmt.Errorf("unexpected type for key %s", jsonKey)
+	}
+	return version, nil
 }
