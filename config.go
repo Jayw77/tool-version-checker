@@ -1,27 +1,70 @@
 package main
 
-import "os"
+import (
+	"fmt"
+	"os"
 
-// Tool struct used inside the tools list for each tool
-type LatestVersionEndpoints struct {
-	Name    string `yaml:"name"`
-	Url     string `yaml:"url"`
-	JSONKey string `yaml:"JSONKey"`
-}
-
-type MyEndpoints struct {
-	Name                      string  `yaml:"name"`
-	Url                       string  `yaml:"url"`
-	JSONKey                   string  `yaml:"JSONKey"`
-	LatestVersionEndpointName *string `yaml:"latestVersionEndpointName"` // using string pointer allows us to differentiate between null & ""
-	Comment                   string  `yaml:"comment"`
-}
+	"gopkg.in/yaml.v2"
+)
 
 // Config struct for the top level yaml file
 type Config struct {
-	LatestVersionEndpoints []LatestVersionEndpoints `yaml:"latestVersionEndpoints"`
-	MyEndpoints            []MyEndpoints            `yaml:"myEndpoints"`
-	FetchInterval          int                      `yaml:"fetchInterval"`
+	Endpoints     []*Endpoint `yaml:"endpoints"`
+	FetchInterval int         `yaml:"fetchInterval"`
+}
+
+type Endpoint struct {
+	Name    string `yaml:"name"`
+	Type    string `yaml:"type"`
+	Url     string `yaml:"url"`
+	Custom  Custom `yaml:"custom"`
+	Version Version
+}
+
+type Custom struct {
+	MyVersion     EndpointConfig `yaml:"myVersion"`
+	LatestVersion EndpointConfig `yaml:"latestVersion"`
+}
+
+type EndpointConfig struct {
+	Endpoint string `yaml:"endpoint"`
+	JsonKey  string `yaml:"jsonKey"`
+}
+
+type Version struct {
+	Current  string
+	Latest   string
+	UpToDate bool
+}
+
+func loadConfig() {
+	var yamlFile []byte
+	var err error
+
+	if fileExists("config/config.yaml") {
+		yamlFile, err = os.ReadFile("config/config.yaml")
+		if err != nil {
+			log.WithField("error", err).Error("Error reading YAML file from config directory")
+			return
+		}
+		fmt.Println("Using config/config.yaml")
+	} else if fileExists("default_config.yaml") {
+		yamlFile, err = os.ReadFile("default_config.yaml")
+		if err != nil {
+			log.WithField("error", err).Error("Error reading YAML file from default config")
+			return
+		}
+		fmt.Println("Using default_config.yaml")
+	} else {
+		log.Error("No configuration file found")
+		return
+	}
+
+	err = yaml.Unmarshal(yamlFile, &config)
+	if err != nil {
+		log.WithField("error", err).Error("Error unmarshalling YAML")
+		return
+	}
 }
 
 func fileExists(filename string) bool {

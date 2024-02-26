@@ -1,61 +1,43 @@
 package main
 
 import (
-	"fmt"
-	"html/template"
 	"net/http"
-	"os"
+	"sync"
 
 	"github.com/sirupsen/logrus"
-	"gopkg.in/yaml.v2"
+	"github.com/yousuf64/shift"
 )
 
 var log = logrus.New()
+var config Config
 
 func main() {
+	// set json formatter
 	log.SetFormatter(&logrus.JSONFormatter{})
-	var yamlFile []byte
-	var err error
 
-	if fileExists("config/config.yaml") {
-		yamlFile, err = os.ReadFile("config/config.yaml")
-		if err != nil {
-			log.WithField("error", err).Error("Error reading YAML file from config directory")
-			return
-		}
-		fmt.Println("Using config/config.yaml")
-	} else if fileExists("default_config.yaml") {
-		yamlFile, err = os.ReadFile("default_config.yaml")
-		if err != nil {
-			log.WithField("error", err).Error("Error reading YAML file from default config")
-			return
-		}
-		fmt.Println("Using default_config.yaml")
-	} else {
-		log.Error("No configuration file found")
-		return
-	}
+	// load config
+	loadConfig()
 
-	var config Config
-	err = yaml.Unmarshal(yamlFile, &config)
-	if err != nil {
-		log.WithField("error", err).Error("Error unmarshalling YAML")
-		return
-	}
+	// begin checking versions
+	go fetchAll()
 
-	go fetchToolDataPeriodically(config)
+	// tmpl := template.Must(template.ParseFiles("home.html"))
+	// http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+	// 	err := tmpl.Execute(w, HomePageData{Tools: currentToolData})
+	// 	if err != nil {
+	// 		log.WithField("error", err).Error("Error executing template")
+	// 	}
+	// })
 
-	tmpl := template.Must(template.ParseFiles("home.html"))
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		err := tmpl.Execute(w, HomePageData{Tools: currentToolData})
-		if err != nil {
-			log.WithField("error", err).Error("Error executing template")
-		}
-	})
+	router := shift.New()
+	router.GET("/", shift.HTTPHandlerFunc(handlerHome))
+	router.GET("/health/live", shift.HTTPHandlerFunc(handlerHealth))
+	router.GET("/health/ready", shift.HTTPHandlerFunc(handlerHealth))
+	router.GET("/styles.css", shift.HTTPHandlerFunc(func(w http.ResponseWriter, r *http.Request) { http.ServeFile(w, r, "assets/styles.css") }))
 
-	log.Info("Server is starting on port 8080...")
-	err = http.ListenAndServe(":8080", nil)
-	if err != nil {
-		log.WithField("error", err).Error("Failed to start server")
-	}
+	var wg sync.WaitGroup
+	wg.Add(1)
+	go http.ListenAndServe(":8080", router.Serve())
+	log.Info("Server started on port 8080...")
+	wg.Wait()
 }

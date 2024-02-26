@@ -1,0 +1,46 @@
+body {
+  display: block;
+  position: absolute;
+  top: 20px; /* Adjust the top margin as needed */
+  left: 45%;
+  transform: translateX(-50%);
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+}
+
+/* Style the table */
+table {
+  width: fit-content;
+  margin: 5px 0 5px 5px; /* Add left margin and vertical spacing */
+  background-color: #ffffff; /* White background */
+  border-collapse: collapse;
+  border: 1px solid #ddd; /* Light gray border */
+  display: block; /* Change display property to block */
+  margin-top: 10px; /* Add top margin to separate from labels */
+}
+
+td {
+  padding: 10px;
+  border: 1px solid #ddd;
+  position: relative;
+  cursor: pointer;
+  text-align: left;
+  color: black;
+}
+
+th {
+  padding: 10px;
+  border: 1px solid #ddd;
+  position: relative;
+  cursor: pointer;
+  text-align: left;
+  color: black;
+}
+
+td a {
+  color: black;
+  background-color: transparent;
+  text-decoration: none;
+}
