@@ -21,6 +21,10 @@ var CurrentVersionEndpoints = map[string]EndpointConfig{
 		Endpoint: "/api/version",
 		JsonKey:  "version", // needs checking
 	},
+	"sonarqube": {
+		Endpoint: "/api/system/status",
+		JsonKey:  "version",
+	},
 }
 
 var LatestVersionEndpoints = map[string]EndpointConfig{
@@ -42,6 +46,10 @@ var LatestVersionEndpoints = map[string]EndpointConfig{
 	},
 	"traefik": {
 		Endpoint: "https://api.github.com/repos/traefik/traefik/releases/latest",
+		JsonKey:  "tag_name",
+	},
+	"sonarqube": {
+		Endpoint: "https://api.github.com/repos/sonarsource/sonarqube/releases/latest",
 		JsonKey:  "tag_name",
 	},
 }
