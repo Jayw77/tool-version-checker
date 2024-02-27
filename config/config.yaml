@@ -1,14 +1,26 @@
-# fetchInterval: 10 # defined in minutes
-tools:
-  - name: 'Prometheus'
-    latestVersionEndpoint: 'https://api.github.com/repos/prometheus/prometheus/releases/latest'
-    latestVersionJSONKey: 'tag_name'
-    # myVersionEndpoint: 'https://api.github.com/repos/prometheus/prometheus/releases/latest'
-    # myVersionJSONKey: 'tag_name'
-    currentVersion: 'v2.48.1'
-    comment: 'Blocked by vulnerability in latest version.'
-  - name: 'Grafana'
-    latestVersionEndpoint: 'https://api.github.com/repos/grafana/grafana/releases/latest'
-    latestVersionJSONKey: 'tag_name'
-    myVersionEndpoint: 'https://api.github.com/repos/grafana/grafana/releases/latest'
-    myVersionJSONKey: 'tag_name'
+fetchInterval: 10 # defined in minutes
+
+endpoints:
+  - name: Grafana
+    type: grafana
+    url: https://grafana.xxxxx.dev
+  - name: Something custom
+    type: custom
+    url: https://mycustomshiz.something.com
+    custom:
+      myVersion:
+        endpoint: /stuff/version
+        jsonKey: data.version
+      latestVersion:
+        endpoint: https://api.github.com/repos/customs/randomshiz/releases/latest
+        jsonKey: tag_name
+  - name: custom working
+    type: custom
+    url: https://api.github.com
+    custom:
+      myVersion:
+        endpoint: /repos/prometheus/prometheus/releases/latest
+        jsonKey: tag_name
+      latestVersion:
+        endpoint: https://api.github.com/repos/prometheus/prometheus/releases/latest
+        jsonKey: tag_name

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Tool Versions</title>
+  <link rel="stylesheet" type="text/css" href="styles.css"/>
+  <!-- <link rel="icon" type="image/x-icon" href="/images/favicon.ico"/> -->
+  <!-- Link to the CSS file -->
+</head>
+
+<body>
+  <h1>Tool Versions</h1>
+  <table>
+    <tr>
+      <th>Name</th>
+      <th>Url</th>
+      <th>Latest Version</th>
+      <th>Remote Version</th>
+      <th>Up to Date</th>
+      <th>Comment</th>
+    </tr>
+    {{range .}}
+    <tr>
+      <td>{{.Name}}</td>
+      <td>{{.Url}}</td>
+      <td>{{.Version.Latest}}</td>
+      <td>{{.Version.Current}}</td>
+      <td style="color: {{if .Version.UpToDate}}green{{else}}red{{end}};">{{.Version.UpToDate}}</td>
+      <td></td>
+    </tr>
+    {{end}}
+  </table>
+</body>
+
+</html>

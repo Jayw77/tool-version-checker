@@ -10,30 +10,66 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+func fetchAll() {
+	var currentVersionEndpoint, latestVersionEndpoint EndpointConfig
+
+	for {
+		for _, e := range config.Endpoints {
+			// get endpoint configs
+			if e.Type == "custom" {
+				currentVersionEndpoint = e.Custom.MyVersion
+				latestVersionEndpoint = e.Custom.LatestVersion
+			} else {
+				currentVersionEndpoint = CurrentVersionEndpoints[e.Type]
+				latestVersionEndpoint = LatestVersionEndpoints[e.Type]
+			}
+			currentVersionEndpoint.Endpoint = e.Url + currentVersionEndpoint.Endpoint
+
+			// call endpoints to get versions
+			e.Version.Current, _ = fetchVersion(currentVersionEndpoint.Endpoint, currentVersionEndpoint.JsonKey)
+			e.Version.Latest, _ = fetchVersion(latestVersionEndpoint.Endpoint, latestVersionEndpoint.JsonKey)
+			e.Version.UpToDate = e.Version.Current == e.Version.Latest
+
+			log.WithFields(logrus.Fields{"endpoint": e.Url, "type": e.Type, "currentVersion": e.Version.Current, "latestVersion": e.Version.Latest, "UpToDate": e.Version.UpToDate}).Info("Version information collected")
+		}
+		time.Sleep(10 * time.Minute)
+	}
+}
+
 func fetchVersion(endpoint string, jsonKey string) (string, error) {
 	log.WithField("endpoint", endpoint).Info("Fetching version")
 
-	client := &http.Client{
-		Timeout: 10 * time.Second,
-	}
-
-	resp, err := client.Get(endpoint)
-	if err != nil {
-		log.WithFields(logrus.Fields{"endpoint": endpoint, "error": err}).Error("Error fetching from endpoint")
-		return "", err
-	}
-	defer resp.Body.Close()
-
 	var jsonData map[string]interface{}
-	err = json.NewDecoder(resp.Body).Decode(&jsonData)
-	if err != nil {
-		log.WithFields(logrus.Fields{"endpoint": endpoint, "error": err}).Error("Error decoding JSON")
-		return "", err
-	}
 
-	if resp.StatusCode == http.StatusBadRequest {
-		log.WithFields(logrus.Fields{"endpoint": endpoint, "statusCode": resp.StatusCode}).Error("Bad request")
-		return "", fmt.Errorf("bad request: %v", resp.Status)
+	if GetCache(endpoint) != nil {
+		// use cached data
+		jsonData = GetCache(endpoint)
+	} else {
+		// make call to endpoint
+		client := &http.Client{
+			Timeout: 10 * time.Second,
+		}
+
+		resp, err := client.Get(endpoint)
+		if err != nil {
+			log.WithFields(logrus.Fields{"endpoint": endpoint, "error": err}).Error("Error fetching from endpoint")
+			return "", err
+		}
+		defer resp.Body.Close()
+
+		err = json.NewDecoder(resp.Body).Decode(&jsonData)
+		if err != nil {
+			log.WithFields(logrus.Fields{"endpoint": endpoint, "error": err}).Error("Error decoding JSON")
+			return "", err
+		}
+
+		// set the cache
+		SetCache(endpoint, jsonData)
+
+		if resp.StatusCode == http.StatusBadRequest {
+			log.WithFields(logrus.Fields{"endpoint": endpoint, "statusCode": resp.StatusCode}).Error("Bad request")
+			return "", fmt.Errorf("bad request: %v", resp.Status)
+		}
 	}
 
 	// Split the jsonKey by "." to support nested keys
