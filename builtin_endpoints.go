@@ -6,8 +6,8 @@ var CurrentVersionEndpoints = map[string]EndpointConfig{
 		JsonKey:  "version",
 	},
 	"prometheus": {
-		Endpoint: "/api/v1/status/buildinfo",
-		JsonKey:  "data.version",
+		Endpoint: "/version",
+		JsonKey:  "version",
 	},
 	"alertmanager": {
 		Endpoint: "/api/v2/status",
