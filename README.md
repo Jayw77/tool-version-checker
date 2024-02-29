@@ -20,41 +20,47 @@ Before running the application, ensure you have the following installed:
 - Go (if running locally)
 - Docker (if running via Docker)
 
+## Default supported tools
+
+By default some endpoints for common tools are setup.  If you want to use an endpoint that isn't already configured, you can either use custom
+as displayed below or do a PR to add support for the tool of choice by amending [here](builtin_endpoints.go).
+
 ## Configuration - config.yaml
 
 \*\*Note: if you don't pass a `config/config.yaml` then it will use the `default_config.yaml` which has test data only.\*\*
 
 ```yaml
-fetchInterval: 10 # defined in minutes (Optional)
-tools:
-  # Example using a hardcoded version value
-  - name: "Prometheus"
-    latestVersionEndpoint: "https://api.github.com/repos/prometheus/prometheus/releases/latest"
-    latestVersionJSONKey: "tag_name"
-    currentVersion: "v2.48.1" # Optional
-    comment: "Blocked by vulnerability in latest version." # Optional
-  # Example using version via API
-  - name: "Grafana"
-    latestVersionEndpoint: "https://api.github.com/repos/grafana/grafana/releases/latest"
-    latestVersionJSONKey: "tag_name"
-    myVersionEndpoint: "https://api.github.com/repos/grafana/grafana/releases/latest"
-    myVersionJSONKey: "tag_name"
-```
+fetchInterval: 10 # defined in minutes
 
-| Field                   | Required/Optional                        | Description                                                                                                           |
-| ----------------------- | ---------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
-| `name`                  | Required                                 | Name of the tool.                                                                                                     |
-| `latestVersionEndpoint` | Required                                 | URL to fetch the latest version.                                                                                      |
-| `latestVersionJSONKey`  | Required                                 | JSON field name that the tag exists in.                                                                               |
-| `myVersionEndpoint`     | Required (unless currentVersion is used) | The endpoint you want to check against the latest version.                                                            |
-| `myVersionJSONKey`      | Required (unless currentVersion is used) | JSON field name that the tag exists in.                                                                               |
-| `currentVersion`        | Optional                                 | Current version of the tool being run. This is useful if you can't get to the endpoint and want to manually override. |
-| `fetchInterval`         | Optional                                 | Interval to fetch the endpoints and refresh the frontend in minutes. Default is 10 minutes.                           |
-| `comment`               | Optional                                 | A comment about the tool.                                                                                             |
+endpoints:
+  - name: Grafana
+    type: grafana
+    url: https://grafana.xxxxx.dev
+  - name: Something custom
+    type: custom
+    url: https://mycustomshiz.something.com
+    custom:
+      myVersion:
+        endpoint: /stuff/version
+        jsonKey: data.version
+      latestVersion:
+        endpoint: https://api.github.com/repos/customs/randomshiz/releases/latest
+        jsonKey: tag_name
+  - name: custom working
+    type: custom
+    url: https://api.github.com
+    custom:
+      myVersion:
+        endpoint: /repos/prometheus/prometheus/releases/latest
+        jsonKey: tag_name
+      latestVersion:
+        endpoint: https://api.github.com/repos/prometheus/prometheus/releases/latest
+        jsonKey: tag_name
+```
 
 ## Output / Frontend
 
-![frontend](./images/tool-versions.png)
+To be added later.
 
 ## Running Locally
 
@@ -88,5 +94,5 @@ Replace $(pwd) with the path to the directory containing your config.yaml file. 
 
 ## Dockerhub Releases
 
-A github workflow is setup to automatically release to docerhub on a successful run on main. It will update the latest tag and tag the SHA.
+A github workflow is setup to automatically release to dockerhub on a successful run on main. It will update the latest tag and tag the SHA.
 In addition, when creating a release using semver, it will automatically create a tag to match the release.
