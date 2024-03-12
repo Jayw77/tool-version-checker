@@ -9,10 +9,10 @@ type Cache struct {
 	Data     map[string]interface{}
 }
 
-var cache = make(map[string]*Cache)           // key is url
-var cacheTtl time.Duration = time.Minute * 10 // 10 minutes cache expiry time
+var cache = make(map[string]*Cache) // key is url
 
 func (cache *Cache) Expired() bool {
+	var cacheTtl time.Duration = config.FetchInterval // cache expiry time
 	return time.Now().After(cache.CachedAt.Add(cacheTtl))
 }
 

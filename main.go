@@ -21,14 +21,6 @@ func main() {
 	// begin checking versions
 	go fetchAll()
 
-	// tmpl := template.Must(template.ParseFiles("home.html"))
-	// http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-	// 	err := tmpl.Execute(w, HomePageData{Tools: currentToolData})
-	// 	if err != nil {
-	// 		log.WithField("error", err).Error("Error executing template")
-	// 	}
-	// })
-
 	router := shift.New()
 	router.GET("/", shift.HTTPHandlerFunc(handlerHome))
 	router.GET("/health/live", shift.HTTPHandlerFunc(handlerHealth))

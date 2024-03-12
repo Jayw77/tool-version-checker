@@ -30,7 +30,7 @@ as displayed below or do a PR to add support for the tool of choice by amending 
 \*\*Note: if you don't pass a `config/config.yaml` then it will use the `default_config.yaml` which has test data only.\*\*
 
 ```yaml
-fetchInterval: 10 # defined in minutes
+fetchInterval: 10m
 
 endpoints:
   - name: Grafana

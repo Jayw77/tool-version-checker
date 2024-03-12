@@ -32,7 +32,7 @@ func fetchAll() {
 
 			log.WithFields(logrus.Fields{"endpoint": e.Url, "type": e.Type, "currentVersion": e.Version.Current, "latestVersion": e.Version.Latest, "UpToDate": e.Version.UpToDate}).Info("Version information collected")
 		}
-		time.Sleep(10 * time.Minute)
+		time.Sleep(config.FetchInterval)
 	}
 }
 
