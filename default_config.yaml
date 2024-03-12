@@ -1,4 +1,4 @@
-fetchInterval: 10 # defined in minutes
+fetchInterval: 10m
 
 endpoints:
   - name: Grafana

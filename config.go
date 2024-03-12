@@ -3,14 +3,15 @@ package main
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"gopkg.in/yaml.v2"
 )
 
 // Config struct for the top level yaml file
 type Config struct {
-	Endpoints     []*Endpoint `yaml:"endpoints"`
-	FetchInterval int         `yaml:"fetchInterval"`
+	Endpoints     []*Endpoint   `yaml:"endpoints"`
+	FetchInterval time.Duration `yaml:"fetchInterval"`
 }
 
 type Endpoint struct {
@@ -65,6 +66,8 @@ func loadConfig() {
 		log.WithField("error", err).Error("Error unmarshalling YAML")
 		return
 	}
+
+	log.Info("Fetch interval: " + config.FetchInterval.String())
 }
 
 func fileExists(filename string) bool {
