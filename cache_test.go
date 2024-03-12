@@ -7,6 +7,7 @@ import (
 )
 
 func TestGetCache(t *testing.T) {
+	config.FetchInterval = time.Minute * 10
 	// Test case 1: Cache does not exist for the URL
 	result := GetCache("nonexistenturl")
 	if result != nil {
@@ -33,6 +34,7 @@ func TestGetCache(t *testing.T) {
 }
 
 func TestSetCache(t *testing.T) {
+	config.FetchInterval = time.Minute * 10
 	url := "testurl"
 	testData := map[string]interface{}{"test": "data"}
 
