@@ -1,26 +1,37 @@
-fetchInterval: 10m
+fetchInterval: 30m
 
-endpoints:
-  - name: Grafana
-    type: grafana
-    url: https://grafana.xxxxx.dev
-  - name: Something custom
-    type: custom
-    url: https://mycustomshiz.something.com
-    custom:
-      myVersion:
-        endpoint: /stuff/version
-        jsonKey: data.version
+# endpoints:
+#   - name: Grafana
+#     type: grafana
+#     url: https://grafana.xxxxx.dev
+#   - name: Something custom
+#     type: custom
+#     url: https://mycustomshiz.something.com
+#     custom:
+#       myVersion:
+#         endpoint: /stuff/version
+#         jsonKey: data.version
+#       latestVersion:
+#         endpoint: https://api.github.com/repos/customs/randomshiz/releases/latest
+#         jsonKey: tag_name
+#   - name: custom working
+#     type: custom
+#     url: https://api.github.com
+#     custom:
+#       myVersion:
+#         endpoint: /repos/prometheus/prometheus/releases/latest
+#         jsonKey: tag_name
+#       latestVersion:
+#         endpoint: https://api.github.com/repos/prometheus/prometheus/releases/latest
+#         jsonKey: tag_name
+
+kubernetes:
+  clusters:
+    - name: home
+      kubeConfig: /Users/alec.pinson/.kube/config
+  customImages:
+    - name: Alert Manager
+      image: quay.io/prometheus/alertmanager
       latestVersion:
-        endpoint: https://api.github.com/repos/customs/randomshiz/releases/latest
-        jsonKey: tag_name
-  - name: custom working
-    type: custom
-    url: https://api.github.com
-    custom:
-      myVersion:
-        endpoint: /repos/prometheus/prometheus/releases/latest
-        jsonKey: tag_name
-      latestVersion:
-        endpoint: https://api.github.com/repos/prometheus/prometheus/releases/latest
+        endpoint: https://api.github.com/repos/prometheus/alertmanager/releases/latest
         jsonKey: tag_name

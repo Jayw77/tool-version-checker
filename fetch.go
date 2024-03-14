@@ -11,29 +11,56 @@ import (
 )
 
 func fetchAll() {
-	var currentVersionEndpoint, latestVersionEndpoint EndpointConfig
 
 	for {
-		for _, e := range config.Endpoints {
-			// get endpoint configs
-			if e.Type == "custom" {
-				currentVersionEndpoint = e.Custom.MyVersion
-				latestVersionEndpoint = e.Custom.LatestVersion
-			} else {
-				currentVersionEndpoint = CurrentVersionEndpoints[e.Type]
-				latestVersionEndpoint = LatestVersionEndpoints[e.Type]
-			}
-			currentVersionEndpoint.Endpoint = e.Url + currentVersionEndpoint.Endpoint
-
-			// call endpoints to get versions
-			e.Version.Current, _ = fetchVersion(currentVersionEndpoint.Endpoint, currentVersionEndpoint.JsonKey)
-			e.Version.Latest, _ = fetchVersion(latestVersionEndpoint.Endpoint, latestVersionEndpoint.JsonKey)
-			e.Version.UpToDate = e.Version.Current == e.Version.Latest
-
-			log.WithFields(logrus.Fields{"endpoint": e.Url, "type": e.Type, "currentVersion": e.Version.Current, "latestVersion": e.Version.Latest, "UpToDate": e.Version.UpToDate}).Info("Version information collected")
-		}
-		time.Sleep(config.FetchInterval)
+		fetchEndpoints()
+		fetchKubernetesImages()
+		time.Sleep(10 * time.Minute)
 	}
+}
+
+func fetchEndpoints() {
+	var currentVersionEndpoint, latestVersionEndpoint EndpointConfig
+
+	for _, e := range config.Endpoints {
+		// get endpoint configs
+		if e.Type == "custom" {
+			currentVersionEndpoint = e.Custom.MyVersion
+			latestVersionEndpoint = e.Custom.LatestVersion
+		} else {
+			currentVersionEndpoint = CurrentVersionEndpoints[e.Type]
+			latestVersionEndpoint = LatestVersionEndpoints[e.Type]
+		}
+		currentVersionEndpoint.Endpoint = e.Url + currentVersionEndpoint.Endpoint
+
+		// call endpoints to get versions
+		e.Version.Current, _ = fetchVersion(currentVersionEndpoint.Endpoint, currentVersionEndpoint.JsonKey)
+		e.Version.Latest, _ = fetchVersion(latestVersionEndpoint.Endpoint, latestVersionEndpoint.JsonKey)
+		e.Version.UpToDate = e.Version.Current == e.Version.Latest
+
+		log.WithFields(logrus.Fields{"endpoint": e.Url, "type": e.Type, "currentVersion": e.Version.Current, "latestVersion": e.Version.Latest, "UpToDate": e.Version.UpToDate}).Info("Version information collected")
+	}
+}
+
+func fetchKubernetesImages() {
+	var kubernetesImages []KubernetesImage
+
+	// get kubernetes pod versions
+	for _, image := range GetKubernetesImageVersions() {
+
+		if image.LatestVersionEndpoint.Endpoint == "" {
+			continue
+		}
+
+		image.Version.Latest, _ = fetchVersion(image.LatestVersionEndpoint.Endpoint, image.LatestVersionEndpoint.JsonKey)
+		image.Version.UpToDate = image.Version.Current == image.Version.Latest
+
+		kubernetesImages = append(kubernetesImages, image)
+
+		log.WithFields(logrus.Fields{"image": image, "type": "kubernetes", "currentVersion": image.Version.Current, "latestVersion": image.Version.Latest, "UpToDate": image.Version.UpToDate}).Info("Version information collected")
+	}
+
+	KubernetesImages = kubernetesImages
 }
 
 func fetchVersion(endpoint string, jsonKey string) (string, error) {

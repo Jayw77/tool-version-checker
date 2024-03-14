@@ -12,6 +12,7 @@ making it easy to see which tools are up to date and which need attention.
 - **Periodic Version Check**: Automatically fetches tool version data at specified intervals.
 - **Custom Configuration**: Supports overriding default settings for fetch intervals, current versions, and comments through `config.yaml`.
 - **Web Interface**: Provides a web interface to view the current and latest versions of tools.
+- **Automatic Kubernetes Image Detection**: Automatically detect version information for all images running within a Kubernetes cluster.
 
 ## Prerequisites
 
@@ -55,6 +56,18 @@ endpoints:
         jsonKey: tag_name
       latestVersion:
         endpoint: https://api.github.com/repos/prometheus/prometheus/releases/latest
+        jsonKey: tag_name
+
+kubernetes:
+  clusters:
+    - name: home
+      kubeConfig: /Users/alec.pinson/.kube/config
+    - name: current cluster example # this config will automatically read from the current cluster
+  customImages:
+    - name: Alert Manager
+      image: quay.io/prometheus/alertmanager
+      latestVersion:
+        endpoint: https://api.github.com/repos/prometheus/alertmanager/releases/latest
         jsonKey: tag_name
 ```
 
