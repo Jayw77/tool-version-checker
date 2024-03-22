@@ -42,10 +42,13 @@ var ContainerImageLatestVersionEndpointNames = map[string]string{
 	"docker.io/grafana/promtail":                             "loki",
 	"quay.io/prometheus/node-exporter":                       "node-exporter",
 	"quay.io/prometheus/prometheus":                          "prometheus",
-	"quay.io/prometheus-operator/prometheus-config-reloader": "prometheus",
-	"quay.io/prometheus-operator/prometheus-operator":        "prometheus",
+	"quay.io/prometheus-operator/prometheus-config-reloader": "prometheus-operator",
+	"quay.io/prometheus-operator/prometheus-operator":        "prometheus-operator",
 	"tailscale/tailscale":                                    "tailscale",
 	"tailscale/k8s-operator":                                 "tailscale",
+	"jayw77/version-checker":                                 "tool-version-checker",
+	"linuxserver/transmission":                               "transmission",
+	"koenkk/zigbee2mqtt":                                     "zigbee2mqtt",
 }
 
 var LatestVersionEndpoints = map[string]EndpointConfig{
@@ -89,6 +92,10 @@ var LatestVersionEndpoints = map[string]EndpointConfig{
 		Endpoint: "https://api.github.com/repos/prometheus/prometheus/releases/latest",
 		JsonKey:  "tag_name",
 	},
+	"prometheus-operator": {
+		Endpoint: "https://api.github.com/repos/prometheus-operator/prometheus-operator/releases/latest",
+		JsonKey:  "tag_name",
+	},
 	"sonarqube": {
 		Endpoint: "https://api.github.com/repos/sonarsource/sonarqube/releases/latest",
 		JsonKey:  "tag_name",
@@ -97,8 +104,20 @@ var LatestVersionEndpoints = map[string]EndpointConfig{
 		Endpoint: "https://api.github.com/repos/tailscale/tailscale/releases/latest",
 		JsonKey:  "tag_name",
 	},
+	"tool-version-checker": {
+		Endpoint: "https://api.github.com/repos/Jayw77/tool-version-checker/releases/latest",
+		JsonKey:  "tag_name",
+	},
 	"traefik": {
 		Endpoint: "https://api.github.com/repos/traefik/traefik/releases/latest",
+		JsonKey:  "tag_name",
+	},
+	"transmission": {
+		Endpoint: "https://api.github.com/repos/transmission/transmission/releases/latest",
+		JsonKey:  "tag_name",
+	},
+	"zigbee2mqtt": {
+		Endpoint: "https://api.github.com/repos/Koenkk/zigbee2mqtt/releases/latest",
 		JsonKey:  "tag_name",
 	},
 }

@@ -36,7 +36,7 @@ func fetchEndpoints() {
 		// call endpoints to get versions
 		e.Version.Current, _ = fetchVersion(currentVersionEndpoint.Endpoint, currentVersionEndpoint.JsonKey)
 		e.Version.Latest, _ = fetchVersion(latestVersionEndpoint.Endpoint, latestVersionEndpoint.JsonKey)
-		e.Version.UpToDate = e.Version.Current == e.Version.Latest
+		e.Version.UpToDate = strings.TrimPrefix(e.Version.Current, "v") == strings.TrimPrefix(e.Version.Latest, "v")
 
 		log.WithFields(logrus.Fields{"endpoint": e.Url, "type": e.Type, "currentVersion": e.Version.Current, "latestVersion": e.Version.Latest, "UpToDate": e.Version.UpToDate}).Info("Version information collected")
 	}
@@ -53,7 +53,7 @@ func fetchKubernetesImages() {
 		}
 
 		image.Version.Latest, _ = fetchVersion(image.LatestVersionEndpoint.Endpoint, image.LatestVersionEndpoint.JsonKey)
-		image.Version.UpToDate = image.Version.Current == image.Version.Latest
+		image.Version.UpToDate = strings.TrimPrefix(image.Version.Current, "v") == strings.TrimPrefix(image.Version.Latest, "v")
 
 		kubernetesImages = append(kubernetesImages, image)
 

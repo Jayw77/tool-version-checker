@@ -30,8 +30,8 @@ kubernetes:
     - name: home
       kubeConfig: /Users/alec.pinson/.kube/config
   customImages:
-    - name: Alert Manager
-      image: quay.io/prometheus/alertmanager
+    - name: plex
+      image: lscr.io/linuxserver/plex
       latestVersion:
-        endpoint: https://api.github.com/repos/prometheus/alertmanager/releases/latest
+        endpoint: https://api.github.com/repos/linuxserver/docker-plex/releases/latest
         jsonKey: tag_name
