@@ -10,16 +10,18 @@
 
 <body>
   <h1>Tool Versions</h1>
+
+  {{if .Endpoints}}
   <table>
     <tr>
       <th>Name</th>
       <th>Url</th>
       <th>Latest Version</th>
-      <th>Remote Version</th>
+      <th>Current Version</th>
       <th>Up to Date</th>
       <th>Comment</th>
     </tr>
-    {{range .}}
+    {{range .Endpoints}}
     <tr>
       <td>{{.Name}}</td>
       <td>{{.Url}}</td>
@@ -30,6 +32,34 @@
     </tr>
     {{end}}
   </table>
+  {{end}}
+
+  {{if .KubernetesImages}}
+  <table>
+    <tr>
+      <th>Name</th>
+      {{if gt $.KubernetesClusterCount 1}}
+      <th>Cluster</th>
+      {{end}}
+      <th>Image</th>
+      <th>Latest Version</th>
+      <th>Current Version</th>
+      <th>Up to Date</th>
+    </tr>
+    {{range .KubernetesImages}}
+    <tr>
+      <td>{{.Name}}</td>
+      {{if gt $.KubernetesClusterCount 1}}
+      <td>{{.Cluster}}</td>
+      {{end}}
+      <td>{{.Image}}</td>
+      <td>{{.Version.Latest}}</td>
+      <td>{{.Version.Current}}</td>
+      <td style="color: {{if .Version.UpToDate}}green{{else}}red{{end}};">{{.Version.UpToDate}}</td>
+    </tr>
+    {{end}}
+  </table>
+  {{end}}
 </body>
 
 </html>

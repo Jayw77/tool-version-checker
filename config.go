@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"time"
 
@@ -11,6 +10,7 @@ import (
 // Config struct for the top level yaml file
 type Config struct {
 	Endpoints     []*Endpoint   `yaml:"endpoints"`
+	Kubernetes    *Kubernetes   `yaml:"kubernetes"`
 	FetchInterval time.Duration `yaml:"fetchInterval"`
 }
 
@@ -18,12 +18,34 @@ type Endpoint struct {
 	Name    string `yaml:"name"`
 	Type    string `yaml:"type"`
 	Url     string `yaml:"url"`
+	Image   string `yaml:"image"`
 	Custom  Custom `yaml:"custom"`
 	Version Version
 }
 
 type Custom struct {
 	MyVersion     EndpointConfig `yaml:"myVersion"`
+	LatestVersion EndpointConfig `yaml:"latestVersion"`
+}
+
+type Kubernetes struct {
+	Clusters     []*KubernetesCluster `yaml:"clusters"`
+	CustomImages []*CustomImage       `yaml:"customImages"`
+}
+
+type KubernetesCluster struct {
+	Name                string `yaml:"name"`
+	Host                string
+	ClientCertificate   string
+	ClientKey           string
+	ClientCACertificate string
+	KubeConfig          string
+	KubeConfigPath      string `yaml:"kubeConfig"`
+}
+
+type CustomImage struct {
+	Name          string         `yaml:"name"`
+	Image         string         `yaml:"image"`
 	LatestVersion EndpointConfig `yaml:"latestVersion"`
 }
 
@@ -48,14 +70,14 @@ func loadConfig() {
 			log.WithField("error", err).Error("Error reading YAML file from config directory")
 			return
 		}
-		fmt.Println("Using config/config.yaml")
+		log.Info("Using config/config.yaml")
 	} else if fileExists("default_config.yaml") {
 		yamlFile, err = os.ReadFile("default_config.yaml")
 		if err != nil {
 			log.WithField("error", err).Error("Error reading YAML file from default config")
 			return
 		}
-		fmt.Println("Using default_config.yaml")
+		log.Info("Using default_config.yaml")
 	} else {
 		log.Error("No configuration file found")
 		return

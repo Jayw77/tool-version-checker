@@ -10,6 +10,7 @@ import (
 
 var log = logrus.New()
 var config Config
+var KubernetesImages []KubernetesImage
 
 func main() {
 	// set json formatter
