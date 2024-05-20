@@ -58,6 +58,9 @@ func fetchKubernetesImages() {
 		kubernetesImages = append(kubernetesImages, image)
 
 		log.WithFields(logrus.Fields{"image": image, "type": "kubernetes", "currentVersion": image.Version.Current, "latestVersion": image.Version.Latest, "UpToDate": image.Version.UpToDate}).Info("Version information collected")
+		// uncomment to do test a single fetch
+		// KubernetesImages = kubernetesImages
+		// return
 	}
 
 	KubernetesImages = kubernetesImages

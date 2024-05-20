@@ -16,17 +16,17 @@
     <tr>
       <th>Name</th>
       <th>Url</th>
-      <th>Latest Version</th>
       <th>Current Version</th>
+      <th>Latest Version</th>
       <th>Up to Date</th>
       <th>Comment</th>
     </tr>
-    {{range .Endpoints}}
+    {{range (sort .Endpoints)}}
     <tr>
       <td>{{.Name}}</td>
       <td>{{.Url}}</td>
-      <td>{{.Version.Latest}}</td>
       <td>{{.Version.Current}}</td>
+      <td>{{.Version.Latest}}</td>
       <td style="color: {{if .Version.UpToDate}}green{{else}}red{{end}};">{{.Version.UpToDate}}</td>
       <td></td>
     </tr>
@@ -42,19 +42,19 @@
       <th>Cluster</th>
       {{end}}
       <th>Image</th>
-      <th>Latest Version</th>
       <th>Current Version</th>
+      <th>Latest Version</th>
       <th>Up to Date</th>
     </tr>
-    {{range .KubernetesImages}}
+    {{range (sort .KubernetesImages)}}
     <tr>
       <td>{{.Name}}</td>
       {{if gt $.KubernetesClusterCount 1}}
       <td>{{.Cluster}}</td>
       {{end}}
       <td>{{.Image}}</td>
-      <td>{{.Version.Latest}}</td>
       <td>{{.Version.Current}}</td>
+      <td>{{.Version.Latest}}</td>
       <td style="color: {{if .Version.UpToDate}}green{{else}}red{{end}};">{{.Version.UpToDate}}</td>
     </tr>
     {{end}}
